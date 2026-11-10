@@ -20,7 +20,7 @@ Edit only the assigned output path. Return templates/handoff.md fields.
 Do not spawn further agents. Report conflicting inputs to the coordinator.
 ```
 
-The register task instead owns the one register path and may allocate new RISK IDs. Dispatch batches serially to that agent. IDs returned by it are reconciled into affected PRDs, roadmap, and destination artifacts through their owning specialists. The coordinator alone updates INDEX.md. If a client lacks custom-agent discovery, attach the complete TOML `developer_instructions` to a general subagent task; do not claim the custom profile was loaded.
+The register task instead owns the one register path and may allocate new RISK IDs. Dispatch batches serially to that agent. IDs returned by it are reconciled into affected PRDs, roadmap, and destination artifacts through their owning specialists. The coordinator alone updates INDEX.md. Use the profile for the current client: `.codex/agents/*.toml` in Codex, `.claude/agents/*.md` in Claude Code, with role-name mapping in `CLAUDE.md`. If a client lacks custom-agent discovery, attach the complete specialist instructions (TOML `developer_instructions` or the Claude Markdown body) to a general subagent task; do not claim the custom profile was loaded. Use one active coordinator per product workspace, including across clients.
 
 ## Stages
 

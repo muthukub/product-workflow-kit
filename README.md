@@ -1,10 +1,10 @@
-# Lean product workflow for Codex
+# Lean product workflow for Codex and Claude Code
 
 Nine specialized, project-scoped subagents produce consistent Markdown artifacts for:
 
 Lean Canvas → Now / Next / Later Roadmap → Lean PRDs → Epics → User Stories / Enablers → RFCs / ADRs.
 
-The main Codex agent coordinates dependencies and handoffs. The risk register is maintained alongside the workflow, starting at the Lean PRD stage. RFCs can move earlier when technical uncertainty blocks planning.
+The main conversation in either client coordinates dependencies and handoffs. Both clients share templates, output paths and risk rules. The risk register is maintained alongside the workflow, starting at the Lean PRD stage. RFCs can move earlier when technical uncertainty blocks planning.
 
 ## Agents and outputs
 
@@ -20,7 +20,7 @@ The main Codex agent coordinates dependencies and handoffs. The risk register is
 | `rfc` | Options, tradeoffs, experiments, proposal and resolution | [RFC](templates/rfc.md) |
 | `adr` | One architecture decision, rationale and consequences | [ADR](templates/adr.md) |
 
-## Start using the agents
+## Start in Codex
 
 Open this folder as the project in Codex and start a new chat so it can load the new project configuration and instructions. Use a trusted project: Codex skips project configuration for untrusted projects. The profiles are in [.codex/agents](.codex/agents); they inherit your parent model and permissions. The project configuration enables agents and caps concurrent subagents at three; the runtime may impose a lower limit.
 
@@ -34,7 +34,38 @@ Use templates/lean-canvas.md and the shared workflow contract.
 Save it under products/<slug>/ and return evidence gaps and next steps.
 ```
 
-To use this kit in another repository, copy `AGENTS.md`, `.codex/agents/`, `templates/`, `workflow/`, and optionally `scripts/` and `examples/`. Merge the instructions into an existing AGENTS.md and merge the `[agents]` settings into existing `.codex/config.toml`; preserve existing rules and other configuration. Do not replace a repository's existing instructions wholesale.
+## Start in Claude Code
+
+Run `claude` from this repository root in a new session. [CLAUDE.md](CLAUDE.md) imports the shared instructions and maps the Codex role names to the Claude agent names in [.claude/agents](.claude/agents). The profiles use the Markdown/frontmatter format from the [official Claude Code subagent documentation](https://code.claude.com/docs/en/sub-agents). The `@AGENTS.md` import also works with the installed Claude Code 2.1.49, which predates direct AGENTS.md support; see [Claude's import guidance](https://code.claude.com/docs/en/memory#import-additional-files).
+
+| Codex name | Claude Code name |
+| --- | --- |
+| `lean_canvas` | `lean-canvas` |
+| `product_roadmap` | `product-roadmap` |
+| `lean_prd` | `lean-prd` |
+| `risk_register` | `risk-register` |
+| `user_story` | `user-story` |
+| `epic`, `enabler`, `rfc`, `adr` | Same names |
+
+```text
+Use lean-canvas to create a Lean Canvas for <product> from <brief path>.
+Follow CLAUDE.md and templates/lean-canvas.md. Save under products/<slug>/.
+```
+
+Use [Claude prompts](examples/claude-prompts.md) for discovery, individual stages and the complete workflow. The profiles request `model: inherit` and use the session's normal tool permissions. Existing environment/managed settings may affect model selection. The three-agent limit is a coordinator instruction in Claude, rather than a Claude settings override. Use one coordinator per product workspace to avoid conflicting edits across clients.
+
+Claude agent files are generated from the canonical Codex instructions. After changing a specialist's TOML profile, run:
+
+```powershell
+python scripts/sync-claude-agents.py
+python scripts/validate-kit.py
+```
+
+The sync command translates role names and retains the specialist's rules and template references. It leaves extra user-added profiles intact and flags them for review. `python scripts/sync-claude-agents.py --check` checks for missing or stale generated profiles without writing. A new Claude session can run the discovery prompt to verify actual agent loading; static validation alone cannot establish that.
+
+## Use in another repository
+
+Copy `AGENTS.md`, `templates/`, `workflow/`, and the configuration for the client(s) you use. Codex needs `.codex/agents/` and the `[agents]` settings from `.codex/config.toml`. Claude Code needs `CLAUDE.md` and `.claude/agents/`. For future synchronization and validation, keep both profile directories and `scripts/`; `examples/` provides copy-ready prompts. Merge instructions into existing AGENTS.md/CLAUDE.md and merge configuration settings, preserving existing repository rules.
 
 ## Risk routing
 
@@ -54,7 +85,7 @@ Risk links are reciprocal. Creating a document does not close a risk. Closure re
 
 [workflow/CONTRACT.md](workflow/CONTRACT.md) defines IDs, metadata, evidence, lifecycle, risk rules and traceability. [workflow/ORCHESTRATION.md](workflow/ORCHESTRATION.md) defines dispatch payloads, dependency order, ownership and completion criteria. The main agent owns the index; one agent writes the risk register, preventing concurrent register edits.
 
-To change output structure, edit its template and keep the corresponding profile consistent. To add a specialist, add its TOML profile, template, routing row and validator mapping. Model overrides are intentionally omitted; add them only for models supported by your account/client.
+To change output structure, edit its template and keep the corresponding profile consistent. To add a specialist, add its canonical TOML profile, template, routing row, Claude mapping and validator mapping, then regenerate Claude profiles. Fixed model overrides are intentionally omitted; use client-supported models if customizing them.
 
 Run:
 
@@ -62,4 +93,4 @@ Run:
 python scripts/validate-kit.py
 ```
 
-The check parses all TOML files and verifies profile fields, template paths, required metadata, headings and repository document links. Python 3.11+ uses `tomllib`; Python 3.10 can use installed `tomli` or pip's bundled parser. It does not assess product quality, run model evaluations, or validate generated product artifacts. The coordinator performs artifact content and routing checks using the runbook.
+The check parses Codex TOML files and verifies profile fields, template paths, required metadata, headings, Claude instruction imports and repository document links. It also verifies that all nine Claude profiles match the expected generated frontmatter and instruction bodies. Python 3.11+ uses `tomllib`; Python 3.10 can use installed `tomli` or pip's bundled parser. It does not assess product quality, run model evaluations, or validate generated product artifacts. The coordinator performs artifact content and routing checks using the runbook.

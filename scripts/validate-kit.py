@@ -2,6 +2,7 @@
 
 from pathlib import Path
 import re
+import subprocess
 import sys
 
 try:
@@ -65,6 +66,25 @@ profiles = list((ROOT / ".codex/agents").glob("*.toml"))
 check({p.stem for p in profiles} == set(ROLES), "Expected exactly nine specialist profiles")
 agents_doc = read(ROOT / "AGENTS.md")
 readme = read(ROOT / "README.md")
+claude_doc = read(ROOT / "CLAUDE.md")
+check("@AGENTS.md" in claude_doc, "CLAUDE.md must import shared AGENTS.md")
+claude_profiles = list((ROOT / ".claude/agents").glob("*.md"))
+check({p.stem for p in claude_profiles} == {role.replace("_", "-") for role in ROLES},
+      "Expected exactly nine Claude Code specialist profiles")
+for role in ROLES:
+    check(f"`{role.replace('_', '-')}`" in claude_doc,
+          f"{role}: missing Claude name mapping")
+sync_script = ROOT / "scripts/sync-claude-agents.py"
+if sync_script.is_file():
+    sync_result = subprocess.run(
+        [sys.executable, str(sync_script), "--check"],
+        capture_output=True, text=True, check=False,
+    )
+    check(sync_result.returncode == 0,
+          "Claude profiles differ from canonical prompts: "
+          + (sync_result.stdout + sync_result.stderr).strip())
+else:
+    check(False, "Missing scripts/sync-claude-agents.py")
 
 for role, template in ROLES.items():
     profile = parse_toml(ROOT / f".codex/agents/{role}.toml")
@@ -103,12 +123,13 @@ for horizon in ("Now", "Next", "Later"):
     check(f"## {horizon}\n" in roadmap, f"Roadmap missing horizon: {horizon}")
 for supporting in ("workflow/CONTRACT.md", "workflow/ORCHESTRATION.md",
                    "templates/product-index.md", "templates/handoff.md",
-                   "examples/prompts.md", "examples/risk-routing.md"):
+                   "examples/prompts.md", "examples/risk-routing.md",
+                   "examples/claude-prompts.md"):
     read(ROOT / supporting)
 
 # Check ordinary local Markdown links in kit documentation. Product placeholders
 # and backticked illustrative paths are intentionally not treated as live links.
-document_paths = [ROOT / "AGENTS.md", ROOT / "README.md"]
+document_paths = [ROOT / "AGENTS.md", ROOT / "CLAUDE.md", ROOT / "README.md"]
 for folder in ("workflow", "templates", "examples"):
     document_paths.extend((ROOT / folder).glob("*.md"))
 links_checked = 0
@@ -126,7 +147,8 @@ if errors:
         print(f"- {error}")
     sys.exit(1)
 
-print(f"PASS: {len(profiles)} TOML agent profiles, 9 artifact templates, "
+print(f"PASS: {len(profiles)} Codex TOML profiles, {len(claude_profiles)} synchronized "
+      "Claude Code profiles, 9 artifact templates, "
       f"2 coordination templates, {links_checked} local links.")
 print("Static kit checks only; custom-agent loading and generated artifact quality "
       "are not evaluated.")

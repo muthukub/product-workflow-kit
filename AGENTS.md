@@ -1,6 +1,6 @@
 # SDLC artifact workspace
 
-This repository contains reusable Codex subagents and standardized Markdown templates. When asked to produce product artifacts, act as the coordinator and delegate each artifact to the matching specialist below. Follow `workflow/CONTRACT.md` and `workflow/ORCHESTRATION.md` before delegation.
+This repository contains reusable Codex and Claude Code subagents and shared standardized Markdown templates. When asked to produce product artifacts, act as the coordinator and delegate each artifact to the matching specialist below. Follow `workflow/CONTRACT.md` and `workflow/ORCHESTRATION.md` before delegation. The table uses Codex names; Claude Code uses the equivalent names mapped in `CLAUDE.md`.
 
 | Work | Custom agent | Template |
 | --- | --- | --- |
@@ -16,4 +16,4 @@ This repository contains reusable Codex subagents and standardized Markdown temp
 
 Use the primary agent as coordinator; no additional coordinator subagent is needed. Run dependent stages sequentially. Parallelize only independent artifacts with separate output paths and reserved IDs. Each specialist owns only its assigned artifacts; the coordinator owns the product index and dispatches register changes to `risk_register` as the single writer.
 
-For modifications to this kit, edit its files directly; do not launch the product workflow or generate a fictional product. Preserve existing user changes. Validate the kit with `python scripts/validate-kit.py`. If the runtime does not expose these custom agent types, report that limitation; use a general subagent with the exact specialist instructions only if subagents are available, and describe the fallback accurately.
+For modifications to this kit, edit its files directly; do not launch the product workflow or generate a fictional product. Preserve existing user changes. Codex TOML profiles hold the canonical specialist instructions; after editing them, regenerate Claude profiles with `python scripts/sync-claude-agents.py`. Validate both clients with `python scripts/validate-kit.py`. If the runtime does not expose these custom agent types, report that limitation; use a general subagent with the exact specialist instructions only if subagents are available, and describe the fallback accurately.

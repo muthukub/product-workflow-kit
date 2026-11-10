@@ -1,0 +1,39 @@
+# Credentials and local environment files
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+
+# Python caches and virtual environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local agent settings and runtime data; shared profiles stay tracked
+CLAUDE.local.md
+.claude/settings.local.json
+.codex/*.local.toml
+.codex/auth.json
+.codex/history.jsonl
+.codex/sessions/
+.codex/archived_sessions/
+.codex/log/
+.codex/tmp/
+
+# Temporary files and logs
+.agent-staging/
+*.log
+*.tmp
+*.swp
+*.swo
+*~
+
+# Operating system metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
