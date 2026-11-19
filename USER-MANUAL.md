@@ -4,6 +4,23 @@ You can start with an idea in ordinary language. The main chat coordinates speci
 
 The workflow helps you answer progressively smaller questions: Who might need this? What should we focus on? What should the product do? What work and decisions will make that possible?
 
+## Workflow at a glance, including lifecycle
+
+After the project setup in section 1, follow the planning stages below. The status belongs to an individual document or risk, rather than to the chat as a whole. Different documents can be at different stages at the same time.
+
+| Workflow stage | What happens | Lifecycle / status | What you review |
+| --- | --- | --- | --- |
+| 1. Lean Canvas | Research the idea and recommend a complete starting business model | `draft` → `ready` → optional `approved` | Do the customer, problem, evidence and proposed model make sense? Ready means usable for validation planning. |
+| 2. Roadmap | Organize outcomes into Now, Next and Later | `draft` → `ready` → optional `approved` | Is the first outcome focused, measurable and realistically sequenced? Horizons are separate from document status. |
+| 3. Lean PRD | Define one initiative's users, behavior, scope, exclusions and success measures | `draft` → `ready` → optional `approved` | Are requirements clear and initial risks registered? Material blockers keep it draft. |
+| 4. Risk register | Track uncertainties and their required responses | Register document: `draft` → `ready` → optional `approved`. Each risk: `open`, `mitigating`, `accepted` or `closed` | Are owners, routes, next actions and closure criteria clear? A ready register can contain open risks. |
+| 5. Epics | Break the requirement into coherent outcomes | `draft` → `ready` → optional `approved` | Does each epic have clear boundaries, acceptance criteria and a useful breakdown? |
+| 6. Stories and enablers | Specify small user/business tasks and supporting technical work | `draft` → `ready` → optional `approved` | Are criteria testable, dependencies visible and risk responses linked? Ready does not mean implemented. |
+| 7. RFCs and ADRs | Evaluate technical options and record decisions; move earlier when needed | RFC: `draft` → `in-review` → `accepted` or `rejected`. ADR: `proposed` → `accepted` or `rejected` | Are alternatives, evidence, consequences and the actual decision recorded? The agent cannot invent acceptance. |
+| 8. Reconcile and learn | Check the connected plan and revise it as evidence arrives | No separate stage status. Update the affected documents and risk entries; use `superseded` for replaced documents/decisions | What should you validate, decide, investigate or implement next? |
+
+These are typical paths, not a requirement to visit every status in order. Explicit approval is needed to label a general document approved, but approval is not an automatic pause before every downstream draft. General documents and RFCs/ADRs can become superseded when replaced. Risk acceptance and risk closure are different outcomes, not consecutive mandatory steps. See [the lifecycle rules](#understand-the-statuses-and-lifecycle) for transition conditions and who can authorize them.
+
 ## 1. Start in the project folder
 
 Use this repository as your working project in Codex, or start Claude Code from this folder. If using a different repository, follow the copying and merging instructions in the [README](README.md#use-in-another-repository).
@@ -222,23 +239,77 @@ Creating a response document moves a risk at most into mitigation. Closing it re
 
 If a requirement changes, update the affected draft and its dependent work. If an accepted architecture decision changes, create a new ADR that supersedes it and preserve the old decision's history. Keep stable IDs when revising existing artifacts.
 
-## Understand the statuses
+## Understand the statuses and lifecycle
 
-| General document status | Meaning |
-| --- | --- |
-| `draft` | Useful work exists, but required inputs, evidence or checks remain incomplete |
-| `ready` | The relevant planning checklist passes; this does not mean the product was built or demand validated |
-| `approved` | An actual user/stakeholder approval is recorded |
-| `superseded` | A newer artifact replaces it; the history is retained |
+There are four lifecycles: general planning documents, RFCs, ADRs and individual risks. Their status names have different meanings. In particular, an accepted architecture decision does not mean its linked risk is closed.
 
-RFCs use `draft`, `in-review`, `accepted`, `rejected` and `superseded`. ADRs use `proposed`, `accepted`, `rejected` and `superseded`. Accepted means an authorized resolution is recorded, not simply that the agent prefers an option.
+### General planning documents
 
-| Risk status | Meaning |
-| --- | --- |
-| `open` | The uncertainty still needs a response |
-| `mitigating` | Work to address it is identified or underway; uncertainty may remain |
-| `accepted` | The accountable owner explicitly accepts the remaining exposure |
-| `closed` | Evidence satisfies the closure criterion |
+This lifecycle applies to the Lean Canvas, roadmap, PRDs, epics, stories, enablers and the risk register document itself.
+
+| Status | Meaning | What permits the change |
+| --- | --- | --- |
+| `draft` | The document is being developed or has material unresolved inputs, evidence gaps or failed checks | The specialist can create a useful draft and explicitly record blockers. Material revisions that invalidate readiness need renewed checks. |
+| `ready` | The applicable checklist passes and material blockers are resolved for the intended planning use | The specialist checks the artifact and the coordinator reconciles its index entry. Neither stakeholder approval, completed implementation nor validated demand is implied. |
+| `approved` | The relevant user/stakeholder explicitly approves this document or scope | An actual decision and its source must be recorded. The agent cannot infer approval from readiness, silence or a request to draft the document. |
+| `superseded` | A replacement document takes over | Record the replacement link and retain the old document's history. A normal revision with the same ID does not automatically require a new document. |
+
+The usual progression is draft, then ready, with approved used when explicit approval is given. Superseded describes replacement rather than completion. Keep the ID stable when revising an existing artifact, update its revision/date, and recheck affected downstream documents. Do not assume an earlier approval covers materially changed content.
+
+For the Lean Canvas, ready means sufficient research and clarity to plan bounded validation. It can still contain labeled hypotheses about price or customer demand. For a story or enabler, ready describes the specification; the kit does not use this document lifecycle to track implementation as in-progress or done.
+
+For the roadmap, Now, Next and Later describe an initiative's priority horizon. They are not replacements for draft, ready or approved. A ready roadmap may contain initiatives in all three horizons, and moving one initiative does not automatically change the document's approval status.
+
+### RFCs: evaluating an approach
+
+| Status | Meaning | What permits the change |
+| --- | --- | --- |
+| `draft` | The technical question, alternatives and evaluation plan are being prepared | The specialist assembles a reviewable proposal and labels missing evidence. |
+| `in-review` | The proposal is under review and feedback or evaluation is being considered | Record the review context, decision owner and unresolved questions; do not invent feedback or completed experiments. |
+| `accepted` | An authorized decision-maker accepts the proposal | Record the actual resolution and its authorization evidence. A confident recommendation alone is insufficient. |
+| `rejected` | An authorized decision-maker rejects the proposal | Record the actual resolution, rationale and authorization evidence. |
+| `superseded` | A newer RFC replaces the proposal | Link the replacement and preserve the earlier record. |
+
+The usual path is draft, then in-review, then accepted or rejected. The agent may prepare the proposal and evaluation plan without waiting for approval at every edit. Acceptance/rejection requires a real resolution. An accepted RFC may lead to an ADR when an enduring architecture decision needs recording; the two documents are not always both necessary.
+
+### ADRs: recording a decision
+
+| Status | Meaning | What permits the change |
+| --- | --- | --- |
+| `proposed` | A specific architecture choice is suggested but not yet authorized | The specialist can record the proposal, alternatives, rationale, consequences and evidence needed. |
+| `accepted` | The authorized owner makes the decision | Record the actual owner, decision date and authorization source. The coordinator records your decision; it does not make approval up. |
+| `rejected` | The authorized owner rejects the proposed choice | Record the decision, rationale and authorization source. |
+| `superseded` | A new ADR replaces an earlier decision | Create a new ADR, link the records both ways, and retain the accepted decision's history rather than rewriting it. |
+
+An ADR starts proposed, then can become accepted or rejected. There is no ready or approved status for an ADR in this kit. If an accepted choice changes, the new decision has its own record and authorization; it does not inherit acceptance automatically.
+
+### Individual risks: managing uncertainty
+
+The risk register has a document status in its metadata, and every RISK entry has its own risk status. These are independent: the register may be ready while a risk remains open or mitigating.
+
+| Risk status | Meaning | What permits the change |
+| --- | --- | --- |
+| `open` | The uncertainty remains unresolved | Record its origin, category, owner or assignment blocker, required route, next action and closure criterion. |
+| `mitigating` | A response is identified or underway; uncertainty may remain | Link the relevant story or RFC/ADR and supporting work. Creating these documents can move a risk at most to mitigating. |
+| `accepted` | The accountable owner explicitly accepts the remaining exposure | Record the owner's decision, rationale, residual exposure and review date. This does not assert the risk was eliminated. |
+| `closed` | Evidence satisfies the risk's stated closure criterion | Record the actual measurement or proof and compare it with the criterion. An artifact, recommendation or implementation claim alone is insufficient. |
+
+A common path is open, then mitigating, followed by closed when evidence supports closure or accepted when the owner deliberately accepts the remaining exposure. Acceptance is not a prerequisite for closure. When a review date arrives or circumstances change, reassess the evidence and exposure rather than treating the old disposition as permanent.
+
+For a business/user risk, the required response is a story with measurable behavior or a learning test. For a technical risk, it is an RFC or ADR; an enabler can support that response. Route completion and uncertainty resolution are separate: a correctly linked RFC may satisfy the routing requirement while its risk remains mitigating.
+
+### Who updates status, and how to request it
+
+Specialists update their assigned documents; the coordinator keeps INDEX.md consistent. Only the risk-register specialist edits the register and its risk entries. Real approvals, architecture resolutions and risk-acceptance decisions must come from an authorized person. Closure must be supported by actual evidence.
+
+```text
+Review the lifecycle status of <artifact or risk ID> in products/<product-slug>/.
+Check it against the relevant checklist, decisions and evidence. Update only
+the statuses supported by those checks, reconcile INDEX.md, and explain each
+change. If a transition is blocked, state the exact missing input or evidence.
+```
+
+For approval or acceptance, provide what you actually decide and identify the document/revision or choice. For closure, provide the actual evidence or its file path. A request to review status by itself is not authorization to approve, accept or close everything. You may continue independent downstream drafting, but material unresolved upstream blockers still prevent the affected downstream artifact from claiming readiness.
 
 ## Find your files
 
