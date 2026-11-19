@@ -1,6 +1,7 @@
 """Validate the reusable agent kit without calling a model or writing files."""
 
 from pathlib import Path
+import argparse
 import re
 import subprocess
 import sys
@@ -18,6 +19,10 @@ except ImportError:
 
 
 ROOT = Path(__file__).resolve().parents[1]
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--embedded", action="store_true",
+                    help="Validate in an application repo; allow extra agents and its own README")
+EMBEDDED = parser.parse_args().embedded
 ROLES = {
     "lean_canvas": "lean-canvas",
     "product_roadmap": "product-roadmap",
@@ -59,25 +64,36 @@ def parse_toml(path):
 config = parse_toml(ROOT / ".codex/config.toml")
 settings = config.get("agents", {})
 check(settings.get("enabled") is True, "Project agents must be enabled")
-check(settings.get("max_concurrent_threads_per_session") == 3,
-      "Expected three concurrent subagent slots")
+if EMBEDDED:
+    limit = settings.get("max_concurrent_threads_per_session")
+    check(type(limit) is int and limit > 0,
+          "Embedded configuration needs a positive subagent concurrency limit")
+else:
+    check(settings.get("max_concurrent_threads_per_session") == 3,
+          "Expected three concurrent subagent slots")
 
-profiles = list((ROOT / ".codex/agents").glob("*.toml"))
-check({p.stem for p in profiles} == set(ROLES), "Expected exactly nine specialist profiles")
+all_profiles = list((ROOT / ".codex/agents").glob("*.toml"))
+profile_names = {p.stem for p in all_profiles}
+check(set(ROLES) <= profile_names if EMBEDDED else profile_names == set(ROLES),
+      "Expected all nine SDLC specialist profiles" if EMBEDDED else "Expected exactly nine specialist profiles")
+profiles = [p for p in all_profiles if p.stem in ROLES]
 agents_doc = read(ROOT / "AGENTS.md")
-readme = read(ROOT / "README.md")
+readme = "" if EMBEDDED else read(ROOT / "README.md")
 claude_doc = read(ROOT / "CLAUDE.md")
 check("@AGENTS.md" in claude_doc, "CLAUDE.md must import shared AGENTS.md")
-claude_profiles = list((ROOT / ".claude/agents").glob("*.md"))
-check({p.stem for p in claude_profiles} == {role.replace("_", "-") for role in ROLES},
-      "Expected exactly nine Claude Code specialist profiles")
+all_claude_profiles = list((ROOT / ".claude/agents").glob("*.md"))
+claude_names = {p.stem for p in all_claude_profiles}
+kit_claude_names = {role.replace("_", "-") for role in ROLES}
+check(kit_claude_names <= claude_names if EMBEDDED else claude_names == kit_claude_names,
+      "Expected all nine Claude SDLC profiles" if EMBEDDED else "Expected exactly nine Claude Code specialist profiles")
+claude_profiles = [p for p in all_claude_profiles if p.stem in kit_claude_names]
 for role in ROLES:
     check(f"`{role.replace('_', '-')}`" in claude_doc,
           f"{role}: missing Claude name mapping")
 sync_script = ROOT / "scripts/sync-claude-agents.py"
 if sync_script.is_file():
     sync_result = subprocess.run(
-        [sys.executable, str(sync_script), "--check"],
+        [sys.executable, str(sync_script), "--check"] + (["--kit-only"] if EMBEDDED else []),
         capture_output=True, text=True, check=False,
     )
     check(sync_result.returncode == 0,
@@ -95,6 +111,8 @@ for role, template in ROLES.items():
     check(set(profile) <= {"name", "description", "developer_instructions"},
           f"{role}: unexpected fields; review supported schema before adding overrides")
     instructions = profile.get("developer_instructions", "")
+    check("Default new product artifacts to docs/." in instructions,
+          f"{role}: default documentation artifact root missing")
     for required in ("AGENTS.md", "workflow/CONTRACT.md",
                      f"templates/{template}.md", "templates/handoff.md"):
         check(required in instructions, f"{role}: instructions must reference {required}")
@@ -104,7 +122,7 @@ for role, template in ROLES.items():
         check("workflow/EARS.md" in instructions, f"{role}: EARS ownership/reference guidance missing")
         check("Semantic review:" in instructions,
               f"{role}: explicit semantic review responsibilities missing")
-    check(f"`{role}`" in agents_doc and f"`{role}`" in readme,
+    check(f"`{role}`" in agents_doc and (EMBEDDED or f"`{role}`" in readme),
           f"{role}: missing from agent catalog")
 
     body = read(ROOT / f"templates/{template}.md")
@@ -169,13 +187,14 @@ for supporting in ("workflow/CONTRACT.md", "workflow/ORCHESTRATION.md",
                    "examples/prompts.md", "examples/risk-routing.md",
                    "examples/claude-prompts.md", "USER-MANUAL.md", "workflow/EARS.md",
                    "examples/ears-pilot.md", "scripts/validate-requirements.py",
-                   "tests/test_requirements.py"):
+                   "tests/test_requirements.py", "workflow/IN-REPOSITORY.md"):
     read(ROOT / supporting)
 
 # Check ordinary local Markdown links in kit documentation. Product placeholders
 # and backticked illustrative paths are intentionally not treated as live links.
-document_paths = [ROOT / "AGENTS.md", ROOT / "CLAUDE.md", ROOT / "README.md",
-                  ROOT / "USER-MANUAL.md"]
+document_paths = [ROOT / "AGENTS.md", ROOT / "CLAUDE.md", ROOT / "USER-MANUAL.md"]
+if not EMBEDDED:
+    document_paths.append(ROOT / "README.md")
 for folder in ("workflow", "templates", "examples"):
     document_paths.extend((ROOT / folder).glob("*.md"))
 links_checked = 0

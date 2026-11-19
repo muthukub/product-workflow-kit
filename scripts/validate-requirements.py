@@ -212,7 +212,8 @@ def audit(product_root):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("product_root", type=Path, help="Product directory containing prds/ and related artifacts")
+    parser.add_argument("product_root", type=Path,
+                        help="Product directory containing prds/, e.g. docs")
     args = parser.parse_args()
     try:
         result = audit(args.product_root)

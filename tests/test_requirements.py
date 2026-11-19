@@ -2,6 +2,8 @@
 
 import importlib.util
 from pathlib import Path
+import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -66,6 +68,20 @@ class RequirementAuditTests(unittest.TestCase):
     def test_wrong_parent_id_is_rejected(self):
         self.prd(rows=[["PRD-002-R01"] + self.row[1:]])
         self.assertIn("wrong-parent", self.errors())
+
+    def test_docs_root_works_from_repository_cwd_without_writes(self):
+        repository = self.root
+        self.root = repository / "docs"
+        self.prd()
+        self.story()
+        before = {p: p.read_bytes() for p in repository.rglob("*.md")}
+        result = subprocess.run(
+            [sys.executable, str(SCRIPT), "docs"], cwd=repository,
+            capture_output=True, text=True, check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("1 active requirements, 2 requirement links checked", result.stdout)
+        self.assertEqual(before, {p: p.read_bytes() for p in repository.rglob("*.md")})
 
     def test_duplicate_ids_and_duplicate_statements_are_rejected(self):
         self.prd(rows=[self.row, self.row])

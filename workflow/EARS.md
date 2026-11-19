@@ -101,7 +101,7 @@ The coordinator summarizes the actual review and requirement-to-verification cov
 
 ## Static checking
 
-Run `python scripts/validate-requirements.py products/<product-slug>` after adopted PRDs and related references exist. The checker reads Markdown without modifying it. It checks active table structure, IDs, pattern shape, required fields, exact duplicate statements within a PRD and requirement-link destinations. It also checks that criterion-table references were declared in the artifact's Requirement references section.
+Run `python scripts/validate-requirements.py docs` after adopted PRDs and related references exist. The checker reads Markdown without modifying it. It checks active table structure, IDs, pattern shape, required fields, exact duplicate statements within a PRD and requirement-link destinations. It also checks that criterion-table references were declared in the artifact's Requirement references section.
 
 Legacy PRDs without the new section are reported and skipped; they are not silently rewritten. A declared reference to a missing or inactive requirement is an error. If no PRD has adopted the section, the command reports that no EARS requirements were checked and exits unsuccessfully. A justified None section is supported for discovery-only work. Superseded artifacts are historical and excluded from the active reference audit.
 

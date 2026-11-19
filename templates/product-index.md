@@ -1,8 +1,10 @@
 # <Product name> artifact index
 
-Product slug: <slug>
+Product: <product name or repository identity>
 Updated: <YYYY-MM-DD>
 Scope of current request: <stages and selected initiatives>
+
+Artifact root: `docs/` by default; record the actual assigned root when continuing an existing product. All links below are relative to that root.
 
 ## Sources and terminology
 

@@ -22,7 +22,7 @@ Use the available web research tools and workflow/LEAN-CANVAS-RESEARCH.md.
 Investigate problems, competitors/substitutes, pricing, channels and costs.
 Recommend the starting business model instead of asking me to fill the blocks.
 Cite actual sources, label inferences/hypotheses, and suggest the first useful test.
-Save under products/<slug>/ using the standard template and shared contract.
+Save under docs/ using the standard template and shared contract.
 ```
 
 If you already have a brief, add its path and any decisions the agent must preserve. If you prefer offline work, say so; the output will disclose the research limitation and remain draft. Missing private facts stay unknown rather than being invented.
@@ -30,7 +30,7 @@ If you already have a brief, add its path and any decisions the agent must prese
 ## Build the roadmap
 
 ```text
-Use product_roadmap to turn products/<slug>/canvas/LC-001.md into an
+Use product_roadmap to turn docs/canvas/LC-001.md into an
 outcome-oriented Now / Next / Later roadmap. Preserve the canvas scope,
 assign stable initiative IDs, and define success and promotion criteria.
 Do not invent delivery dates or create PRDs for every Later item.
@@ -41,7 +41,7 @@ Do not invent delivery dates or create PRDs for every Later item.
 New PRDs use selective EARS by default. See [adoption and optional pilot prompts](ears-pilot.md) for scoped existing revisions or comparative measurement.
 
 ```text
-Use lean_prd for initiative <RM-001-I01> in products/<slug>/roadmap/RM-001.md.
+Use lean_prd for initiative <RM-001-I01> in docs/roadmap/RM-001.md.
 Use selective EARS for suitable observable behavior and retain learning hypotheses.
 Record actual semantic review in the PRD and have the coordinator challenge it;
 summarize adoption scope, findings and blockers in INDEX.md separately from scripts.
@@ -55,7 +55,7 @@ pending rather than claiming risk routing or mitigation is complete.
 
 ```text
 Coordinate the specialist agents in AGENTS.md for <initiative ID> using
-products/<slug>/ and <brief/source paths>. Produce or revise only the necessary
+docs/ and <brief/source paths>. Produce or revise only the necessary
 Canvas, roadmap, Lean PRD, risk register, epics, stories, enablers and RFCs/ADRs.
 Reuse existing artifacts. Run dependent stages sequentially and independent
 items in parallel with distinct paths and reserved IDs. Put business/user risks
@@ -66,7 +66,7 @@ links and report evidence gaps. Keep undecided architecture proposed.
 ## Route a newly discovered risk
 
 ```text
-Use risk_register to add this risk to products/<slug>/risks/RR-001.md:
+Use risk_register to add this risk to docs/risks/RR-001.md:
 <cause -> uncertain event -> impact, source PRD and discovery stage>.
 Classify it, deduplicate, and return its stable ID. Then delegate the response
 to user_story for business/user risk, or rfc/adr for technical risk. Link the

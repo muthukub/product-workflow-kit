@@ -42,9 +42,13 @@ For a spike: question, hypotheses/options, smallest experiment, timebox, exit cr
 
 Blocking decisions and work items; compatibility, migration, observability, rollout and rollback as applicable. Do not implement an unresolved architectural option as though accepted.
 
+When used in a source repository, identify affected app/package paths, engineering instructions and actual verification commands, or TBD/no code yet. Distinguish scaffold defaults from accepted decisions and plan the coding handoff under workflow/IN-REPOSITORY.md; this planning assignment does not edit application code.
+
 ## Verification and completion
 
 Definition of Ready, Definition of Done, and concrete evidence expected for completion. Mark estimates as assumptions unless supplied.
+
+After separately requested execution, retain actual code/PR paths, experiment outputs and executed checks here, including inconclusive or failed results. Do not infer completion from the enabler document or change document/risk states automatically.
 
 ## Open questions
 

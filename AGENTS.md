@@ -2,6 +2,12 @@
 
 This repository contains reusable Codex and Claude Code subagents and shared standardized Markdown templates. When asked to produce product artifacts, act as the coordinator and delegate each artifact to the matching specialist below. Follow `workflow/CONTRACT.md` and `workflow/ORCHESTRATION.md` before delegation. The table uses Codex names; Claude Code uses the equivalent names mapped in `CLAUDE.md`.
 
+These specialists can be embedded at the root of an application repository alongside its source code. Follow `workflow/IN-REPOSITORY.md` for installation, scaffold context and coding handoff; do not require a separate planning repository or nested copy of this entire kit.
+
+Default product artifacts to `docs/`. Reuse the assigned product root and its existing index when continuing work elsewhere; migrate an existing tree only within the user's requested scope and preserve historical records.
+
+Route by the user's requested work. Product planning uses these specialists and their assigned Markdown paths. Explicit scaffolding or implementation requests use the primary coding agent or applicable coding workers under the repository's engineering instructions; planning-specialist file restrictions do not prohibit separately authorized coding work. Existing fixes and maintenance do not require regenerating the entire product workflow. A planning request alone does not authorize application edits or dependency installation.
+
 | Work | Custom agent | Template |
 | --- | --- | --- |
 | Research-first Lean Canvas from a plain-language idea | `lean_canvas` | `templates/lean-canvas.md` |

@@ -12,7 +12,9 @@ Ask only questions that materially affect scope or correctness. Continue draftin
 
 ## Files and identifiers
 
-Product output root: `products/<product-slug>/`. Before delegating, the coordinator creates `INDEX.md` using `templates/product-index.md`, reads existing IDs, and reserves unused IDs. IDs are unique within a product, stable across revisions, and never reused after removal. Record reservations in the index before parallel dispatch. The risk register agent allocates risk IDs serially and returns them for reconciliation.
+Product output root: `docs/`. Before delegating, the coordinator creates `INDEX.md` using `templates/product-index.md`, reads existing IDs, and reserves unused IDs. IDs are unique within a product, stable across revisions, and never reused after removal. Record reservations in the index before parallel dispatch. The risk register agent allocates risk IDs serially and returns them for reconciliation.
+
+This is the default for new work. Reuse an existing product's explicitly assigned root/index when it lives elsewhere; never create a second tree merely to match the default. For an authorized relocation, move the whole product tree, preserve IDs and historical snapshot bytes, and verify relative links and canonical references at the destination. Historical commands/source paths inside frozen records describe the earlier run and are not silently rewritten. Do not place planning content in a scaffold's `apps/docs` application merely because it is named docs.
 
 | Type | ID | Path relative to the product root |
 | --- | --- | --- |
@@ -62,3 +64,5 @@ Use qualitative probability and impact scores 1-3; score = probability x impact.
 The normal parent chain is Canvas -> Roadmap -> PRD -> Epic -> Story/Enabler. A roadmap initiative uses a stable item ID such as `RM-001-I01`. PRDs name that item. RFCs/ADRs link the affected story/enabler when it exists and always their originating PRD/risk; early risk evaluation need not wait for delivery decomposition. Ordinary stories and necessary technical decisions may exist without a risk; use `None - not risk-driven` explicitly.
 
 Before return, compare headings and metadata against the assigned template, check parent existence and link targets, verify IDs and terminology, check risk routing and measurable criteria, and identify assumptions that prevent readiness. Return the structure in `templates/handoff.md`. Do not implement code, open tickets, publish, or contact people unless the user explicitly includes that work.
+
+When embedded in a source repository, follow `workflow/IN-REPOSITORY.md`. Inspect relevant scaffolding/manifests and engineering instructions before asserting current architecture or test commands; mark absent code as absent. Starter defaults are observed context, not accepted product architecture. Planning specialists still edit only their assigned artifacts. Separately requested scaffolding/implementation can be performed by the coordinator as a coding agent or by coding workers; the planning contract is not a repository-wide ban on coding. Handoff relevant story/enabler criteria, canonical PRD rows, decisions, unresolved blockers, actual code paths and verification commands without inventing implementation results.

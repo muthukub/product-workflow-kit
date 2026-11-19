@@ -23,7 +23,9 @@ These are typical paths, not a requirement to visit every status in order. Expli
 
 ## 1. Start in the project folder
 
-Use this repository as your working project in Codex, or start Claude Code from this folder. If using a different repository, follow the copying and merging instructions in the [README](README.md#use-in-another-repository).
+For a real product, open its application repository as the working project in Codex or start Claude Code from that root. Embed this kit's project profiles and shared files there using the [in-repository integration guide](workflow/IN-REPOSITORY.md). The planning files live alongside the application source; this kit checkout is only the reusable source. You can also use this checkout to maintain or evaluate the kit itself.
+
+A Turborepo scaffold can already exist before planning. The specialists inspect its relevant manifests and source as context, distinguish starter defaults from product decisions, and keep their assignments limited to planning artifacts. When you explicitly request implementation, the primary coding agent or coding workers consume a selected story/enabler and its canonical requirements in that same repository. Ordinary fixes do not restart the complete discovery workflow. The guide includes copy-ready integration, planning and implementation prompts plus embedded validation commands.
 
 Keep one main chat as the coordinator for a product at a time. You do not need to open a separate chat for each specialist. The coordinator assigns tasks, manages document IDs, updates the index and brings the results back to you. Avoid running Codex and Claude against the same product files simultaneously.
 
@@ -43,7 +45,7 @@ The examples below use Codex names. In Claude, substitute the name in the right-
 
 Before your first run, you can use the read-only discovery prompt in [Codex prompts](examples/prompts.md#check-agent-discovery) or [Claude prompts](examples/claude-prompts.md#check-discovery-without-generating-product-artifacts). It checks whether the named specialists are available. If a fallback is used, the coordinator should tell you.
 
-Choose a short folder name for your product, such as `my-product`. In the prompts, replace `<product-slug>` with that name. Replace other angle-bracket placeholders with your own details. The coordinator handles folder creation, unused IDs and index entries. Example IDs below describe an initial run; reuse the actual IDs in your index when continuing existing work.
+The repository is already the product workspace. Planning artifacts go directly under `docs/`, with the index at `docs/INDEX.md`; no additional product folder or slug is required. Replace prompt placeholders with your own details. The coordinator handles artifact subfolders, unused IDs and index entries. Example IDs below describe an initial run; reuse the actual IDs in your index when continuing existing work.
 
 ## 2. Describe the idea and get a researched Lean Canvas
 
@@ -58,7 +60,7 @@ Use lean_canvas to research this idea and create a complete Lean Canvas:
 Useful context: <optional customer, geography, founder constraints or existing evidence>.
 Use available web research tools, cite the supporting pages, and recommend a
 starting business model in plain English. Label assumptions and propose the
-three most useful validation tests. Save under products/<product-slug>/.
+three most useful validation tests. Save under docs/.
 ```
 
 **The agent does:** Researches customer problems, alternatives, advertised prices, acquisition channels, costs and relevant constraints. It fills all nine canvas blocks: problem, customer segments, value proposition, solution, channels, revenue, costs, metrics and unfair advantage. Sources and research coverage are included in the canvas.
@@ -79,7 +81,7 @@ The agent distinguishes facts, inferences, hypotheses and unknowns. A competitor
 
 ```text
 Use product_roadmap to create a Now / Next / Later roadmap from
-products/<product-slug>/canvas/LC-001.md.
+docs/canvas/LC-001.md.
 Keep Now focused on the smallest useful outcome. Preserve the canvas scope.
 Give initiatives stable IDs, success measures, dependencies and criteria for
 moving between horizons. Explain the recommended order. Do not invent dates.
@@ -107,7 +109,7 @@ New PRDs use selective EARS by default for suitable observable behavior in their
 
 ```text
 Use lean_prd to define initiative <initiative ID> from
-products/<product-slug>/roadmap/RM-001.md.
+docs/roadmap/RM-001.md.
 Then use risk_register to deduplicate and register its risks.
 Run these tasks sequentially. Have lean_prd replace temporary risk references
 with the registered IDs and product_roadmap link them to the initiative.
@@ -179,7 +181,7 @@ The coordinator sends behavioral changes to the PRD specialist and register chan
 An epic groups related work around a useful result. It is smaller than the PRD's overall scope and larger than an individual story. For example, enabling a user to complete a useful workflow is a clearer outcome than grouping work only by database, API and screen.
 
 ```text
-Use epic to break products/<product-slug>/prds/PRD-001.md into the minimum
+Use epic to break docs/prds/PRD-001.md into the minimum
 useful epics. Create separate epic files with reserved IDs, outcome-level
 acceptance criteria, scope boundaries and candidate stories/enablers.
 Map risk responses to the relevant epic. Preserve PRD exclusions and report
@@ -208,7 +210,7 @@ The coordinator assigns bounded tasks to the epic specialist, keeping one outcom
 Acceptance criteria describe how someone can tell the work succeeded. A story may express them as Given a starting situation, When an action happens, Then an observable result follows.
 
 ```text
-Use user_story and enabler to turn <epic ID> in products/<product-slug>/
+Use user_story and enabler to turn <epic ID> in docs/
 into small, testable items. Give business/user risks direct story responses
 with hypotheses, methods, thresholds and next decisions. Technical enablers
 must identify the outcome they support and any required RFC/ADR dependency.
@@ -236,7 +238,7 @@ An RFC, or Request for Comments, compares options and identifies evidence needed
 | Evaluation leads to an enduring architecture decision | RFC, then an ADR if appropriate |
 
 ```text
-Review the technical risks for <PRD or epic ID> in products/<product-slug>/.
+Review the technical risks for <PRD or epic ID> in docs/.
 Use rfc where alternatives or feasibility need evaluation, and adr where a
 specific decision needs recording. Link the originating PRD and risk IDs.
 Reference canonical PRD requirements that constrain the options or decision.
@@ -257,7 +259,7 @@ This step can happen immediately after the PRD if technical uncertainty blocks u
 **Question answered:** Do the documents fit together, and what is actually ready to happen?
 
 ```text
-Reconcile the planning artifacts for <initiative ID> in products/<product-slug>/.
+Reconcile the planning artifacts for <initiative ID> in docs/.
 Check parent links, scope, dependencies, measurable criteria and the index.
 Use risk_register to check that business/user risks link to stories and technical
 risks link to RFCs/ADRs, with reciprocal links. Report missing responses, owners,
@@ -281,7 +283,7 @@ These are suggested review points, not mandatory approval pauses between every d
 The workflow continues when research, customer conversations, experiments or implementation reveal something new. Give the coordinator your actual observations or a source file; it should not invent results on your behalf.
 
 ```text
-New evidence for products/<product-slug>/: <observations or source path>.
+New evidence for docs/: <observations or source path>.
 Use risk_register to compare it with <risk ID>'s closure criterion.
 Revise affected artifacts through their specialists and update the index.
 Explain what changed, what remains uncertain and whether priorities should change.
@@ -355,7 +357,7 @@ For a business/user risk, the required response is a story with measurable behav
 Specialists update their assigned documents; the coordinator keeps INDEX.md consistent. Only the risk-register specialist edits the register and its risk entries. Real approvals, architecture resolutions and risk-acceptance decisions must come from an authorized person. Closure must be supported by actual evidence.
 
 ```text
-Review the lifecycle status of <artifact or risk ID> in products/<product-slug>/.
+Review the lifecycle status of <artifact or risk ID> in docs/.
 Check it against the relevant checklist, decisions and evidence. Update only
 the statuses supported by those checks, reconcile INDEX.md, and explain each
 change. If a transition is blocked, state the exact missing input or evidence.
@@ -365,7 +367,7 @@ For approval or acceptance, provide what you actually decide and identify the do
 
 ## Find your files
 
-All paths in this table are relative to `products/<product-slug>/`. The numbers are examples; the coordinator reserves unused IDs and reuses the existing register.
+All paths in this table are relative to `docs/`. The numbers are examples; the coordinator reserves unused IDs and reuses the existing register.
 
 | File | What you use it for |
 | --- | --- |
@@ -385,7 +387,7 @@ All paths in this table are relative to `products/<product-slug>/`. The numbers 
 **Resume in a new chat:**
 
 ```text
-Continue products/<product-slug>/. Read INDEX.md and the relevant artifacts.
+Continue docs/. Read INDEX.md and the relevant artifacts.
 Summarize the current outcome, open risks and blockers, then recommend the
 next bounded action. Reuse existing work and do not restart the workflow.
 ```
@@ -393,7 +395,7 @@ next bounded action. Reuse existing work and do not restart the workflow.
 **Correct an assumption:**
 
 ```text
-For products/<product-slug>/, correct this assumption: <correction>.
+For docs/, correct this assumption: <correction>.
 Update the affected artifacts and index through their owning specialists.
 Preserve unrelated scope and explain the downstream effect.
 ```
@@ -401,7 +403,7 @@ Preserve unrelated scope and explain the downstream effect.
 **Request several stages together:**
 
 ```text
-For <initiative ID> in products/<product-slug>/, coordinate the relevant
+For <initiative ID> in docs/, coordinate the relevant
 specialists to prepare the remaining planning documents through the delivery
 handoff. Reuse existing artifacts, follow dependencies, and preserve scope.
 Keep proposed decisions and evidence gaps explicit. Report what I need to
@@ -440,7 +442,7 @@ For the underlying rules, see the [shared contract](workflow/CONTRACT.md), [coor
 For structural checking of adopted PRD requirements and their downstream references, use:
 
 ```powershell
-python scripts/validate-requirements.py products/<product-slug>
+python scripts/validate-requirements.py docs
 ```
 
 This read-only check catches malformed tables, certain syntax problems, invalid/duplicate IDs and broken canonical references. It skips legacy PRDs without EARS sections and reports when none were checked. It cannot prove completeness, semantic correctness, test coverage or readiness, and never changes statuses. Record adoption scope and actual semantic review in the PRD/handoffs/index, separately from script output. Keep optional pilot measurements in the index; script tests are not evidence of product-pilot gains.

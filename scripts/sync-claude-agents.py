@@ -19,11 +19,17 @@ except ImportError:
 
 
 ROOT = Path(__file__).resolve().parents[1]
+KIT_ROLES = {
+    "lean_canvas", "product_roadmap", "lean_prd", "risk_register", "epic",
+    "user_story", "enabler", "rfc", "adr",
+}
 
 
-def expected_profiles():
+def expected_profiles(kit_only=False):
     profiles = []
     for path in sorted((ROOT / ".codex/agents").glob("*.toml")):
+        if kit_only and path.stem not in KIT_ROLES:
+            continue
         source = tomllib.loads(path.read_text(encoding="utf-8-sig"))
         for field in ("name", "description", "developer_instructions"):
             if not isinstance(source.get(field), str) or not source[field].strip():
@@ -31,6 +37,10 @@ def expected_profiles():
         profiles.append(source)
     if not profiles:
         raise ValueError("No canonical Codex profiles found")
+    if kit_only:
+        missing = KIT_ROLES - {item["name"] for item in profiles}
+        if missing:
+            raise ValueError("Missing canonical SDLC roles: " + ", ".join(sorted(missing)))
     names = {item["name"]: item["name"].replace("_", "-") for item in profiles}
     if len(set(names.values())) != len(profiles):
         raise ValueError("Duplicate agent names after Claude name translation")
@@ -58,16 +68,20 @@ def expected_profiles():
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="Check drift without writing")
+    parser.add_argument("--kit-only", action="store_true",
+                        help="Manage only the nine SDLC roles; preserve unrelated coding agents")
     args = parser.parse_args()
     destination = ROOT / ".claude/agents"
     try:
-        expected = expected_profiles()
+        expected = expected_profiles(kit_only=args.kit_only)
     except (ValueError, OSError, tomllib.TOMLDecodeError) as exc:
         print(f"FAILED: {exc}")
         return 1
     errors = []
-    # Keep user-added files intact; flag unexpected names rather than deleting them.
+    # Keep user-added files intact; embedded use leaves unrelated agents out of scope.
     for path in destination.glob("*.md"):
+        if args.kit_only and path.stem not in {role.replace("_", "-") for role in KIT_ROLES}:
+            continue
         if path.stem not in expected:
             errors.append(f"Unexpected Claude profile: {path.name}; review it manually")
     if not args.check:

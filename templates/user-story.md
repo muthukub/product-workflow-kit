@@ -40,9 +40,13 @@ For each linked business/user risk: hypothesis, experiment/method, audience/samp
 
 Blocking stories/enablers, pending RFCs/ADRs, and assumptions. Preserve explicit decision blockers.
 
+When used in a source repository, identify the affected app/package paths and repository instructions from actual inspection, or TBD/no code yet. Name relevant engineering commands and blocking product/architecture decisions for the coding handoff; do not invent files, commands or an accepted stack. Planning does not implement the story. Follow workflow/IN-REPOSITORY.md.
+
 ## Verification and completion
 
 How each acceptance criterion will be verified; risk evidence expected; Definition of Ready and Definition of Done. Done requires evidence, not merely writing the story. Estimates are optional; label any unvalidated estimate.
+
+After separately requested implementation, retain actual changed-path/PR references, executed checks and remaining failures here. These are implementation evidence, not new document lifecycle states or automatic risk closure.
 
 ## Open questions
 

@@ -7,7 +7,7 @@ Use these prompts with an actual initiative/PRD. The coordinator follows [the EA
 New PRDs use selective EARS by default; a fresh comparative pilot is optional. For an existing PRD, adopt behavior within the requested material revision and preserve untouched legacy scope. The coordinator records that scope and the actual review in the index.
 
 ```text
-For <initiative/PRD ID> in products/<product-slug>/, follow workflow/EARS.md.
+For <initiative/PRD ID> in docs/, follow workflow/EARS.md.
 Use selective EARS for suitable observable behavior in this new PRD, or only
 within the requested material revision of an existing PRD. Record source
 revisions and untouched scope. Keep learning hypotheses and spikes in their formats.
@@ -24,14 +24,14 @@ run static checks separately. Keep material blockers visible before readiness.
 
 The KaamSaathi prospective document pilot, recorded on 2026-11-19, produced 18 canonical behavioral rows and 14 linked artifacts. Its frozen prose baseline had 10 specified and 2 partial topics in a predeclared twelve-topic review; the final review had 11 specified and 1 partial. Concrete numeric/device limits remained unresolved. Two actual clarification batches included an early RFC review that separated application-initiated disclosure from platform backup/transfer; cross-artifact exploratory thresholds also needed reconciliation. Final linkage maintenance did not change canonical behavior.
 
-This was a sequential assisted authoring exercise with additional research, not a controlled EARS comparison. Human review effort, product performance and customer impact were not measured. The user subsequently authorized continuing selective adoption with semantic review. The full workspace record is under `products/kaamsaathi/pilot/RESULTS.md`; it need not be copied into another repository to use this kit. Historical records remain unchanged.
+This was a sequential assisted authoring exercise with additional research, not a controlled EARS comparison. Human review effort, product performance and customer impact were not measured. The user subsequently authorized continuing selective adoption with semantic review. The full workspace record is under `docs/pilot/RESULTS.md`; it need not be copied into another repository to use this kit. Historical records remain unchanged.
 
 Use the remaining prompts when deliberately running a further comparative pilot.
 
 ## Select and record the scope
 
 ```text
-Pilot EARS only for <initiative ID> in products/<product-slug>/.
+Pilot EARS only for <initiative ID> in docs/.
 Read the current index, PRD and related artifacts. Record the selected scope
 and source revisions in INDEX.md. Preserve unrelated work and approvals.
 Use the four measures in workflow/EARS.md; record actual baseline observations
@@ -65,7 +65,7 @@ competing copies of the same obligation. Preserve normal risk routing.
 ## Review and compare
 
 ```text
-Run the read-only requirements checker for products/<product-slug>/.
+Run the read-only requirements checker for docs/.
 Separately review intended meaning, necessary/sufficient conditions, terminology,
 failure/boundary cases, contradictions and requirement-to-verification coverage.
 Record actual clarification rounds, missing edge cases, review effort and
