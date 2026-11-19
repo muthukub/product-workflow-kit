@@ -2,7 +2,7 @@
 
 ## Intake and dispatch
 
-Determine product slug, supplied sources, requested stage(s), and desired depth. Search existing artifacts before asking for information already present. Start at the requested stage; do not regenerate accepted upstream documents unnecessarily. If no product brief is supplied, request it before product-specific generation. Creating this reusable kit does not require a product brief.
+Determine product slug, supplied sources, requested stage(s), and desired depth. Search existing artifacts before asking for information already present. Start at the requested stage; do not regenerate accepted upstream documents unnecessarily. For Lean Canvas work, accept a short plain-language idea directly from the chat; a formal product brief is optional. If the idea itself is absent, request it in plain English. Do not require answers to canvas blocks or market research before dispatch. Other stages need their relevant upstream context. Creating this reusable kit does not require a product brief.
 
 Read the shared contract, the specialist profile, its template, and the relevant existing artifacts. Create/update the product index and reserve artifact IDs. Dispatch this payload to the named custom agent:
 
@@ -15,6 +15,7 @@ Required parent IDs / roadmap item: <ids>
 Assigned risk IDs and route: <ids or explicit none>
 Known decisions, constraints, terminology: <facts>
 Missing inputs / permitted assumptions: <items>
+Research mode / constraints: <live by default for Lean Canvas; user restrictions or known tool limits>
 Read workflow/CONTRACT.md and templates/<type>.md before writing.
 Edit only the assigned output path. Return templates/handoff.md fields.
 Do not spawn further agents. Report conflicting inputs to the coordinator.
@@ -24,7 +25,7 @@ The register task instead owns the one register path and may allocate new RISK I
 
 ## Stages
 
-1. **Lean Canvas:** capture the nine blocks and distinguish assumptions from evidence. Return assumptions for prioritization, not premature formal risk records.
+1. **Lean Canvas:** delegate a research-first canvas using `workflow/LEAN-CANVAS-RESEARCH.md`. The specialist uses available web search and page-reading tools to investigate customer problems, alternatives, pricing, channels, costs and constraints, then populates all nine blocks with recommendations and dated source links. Pass supplied decisions and research restrictions. Ask only essential plain-language scope questions; otherwise use explicit working assumptions. Keep evidence and source coverage inside the canvas unless a separate research-note path is assigned. If tool access is unavailable, the coordinator may supply permitted research through the same tools or report the limitation; keep an unresearched result draft. Review key claims against their cited pages and distinguish a complete planning document from validated demand. Return prioritized hypotheses and practical tests, not premature formal risk records.
 2. **Roadmap:** derive outcome-oriented Now / Next / Later initiatives with stable item IDs, measurable outcomes, rationale, confidence, and promotion criteria. Do not invent dates or expand every Later item into a PRD.
 3. **Lean PRD + risk registration:** draft one PRD per selected initiative/problem. PRD agent returns risk candidates in its risk table. Register agent deduplicates against existing entries and assigns IDs. PRD agent replaces candidate references with the returned risk links. Roadmap agent links the risks to the initiative. This completes the stage where the risk is born; downstream routing can remain pending until its artifact exists.
 4. **Epics:** decompose the selected PRD into minimal outcome-oriented epics. Identify which epic owns each risk response. Preserve the PRD's outcomes, exclusions, and measures.

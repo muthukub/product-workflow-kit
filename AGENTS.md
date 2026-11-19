@@ -4,7 +4,7 @@ This repository contains reusable Codex and Claude Code subagents and shared sta
 
 | Work | Custom agent | Template |
 | --- | --- | --- |
-| Lean Canvas | `lean_canvas` | `templates/lean-canvas.md` |
+| Research-first Lean Canvas from a plain-language idea | `lean_canvas` | `templates/lean-canvas.md` |
 | Now / Next / Later roadmap | `product_roadmap` | `templates/product-roadmap.md` |
 | Lean PRD | `lean_prd` | `templates/lean-prd.md` |
 | Risk register | `risk_register` | `templates/risk-register.md` |
@@ -15,5 +15,7 @@ This repository contains reusable Codex and Claude Code subagents and shared sta
 | Architecture Decision Record | `adr` | `templates/adr.md` |
 
 Use the primary agent as coordinator; no additional coordinator subagent is needed. Run dependent stages sequentially. Parallelize only independent artifacts with separate output paths and reserved IDs. Each specialist owns only its assigned artifacts; the coordinator owns the product index and dispatches register changes to `risk_register` as the single writer.
+
+For Lean Canvas requests, accept a short idea without requiring business-school knowledge or a detailed brief. The specialist follows `workflow/LEAN-CANVAS-RESEARCH.md`, uses available research tools by default, and delivers all nine blocks with sources, recommendations and testable assumptions. Ask only essential scope questions. If live research is unavailable, disclose it and return a useful draft without claiming verified research.
 
 For modifications to this kit, edit its files directly; do not launch the product workflow or generate a fictional product. Preserve existing user changes. Codex TOML profiles hold the canonical specialist instructions; after editing them, regenerate Claude profiles with `python scripts/sync-claude-agents.py`. Validate both clients with `python scripts/validate-kit.py`. If the runtime does not expose these custom agent types, report that limitation; use a general subagent with the exact specialist instructions only if subagents are available, and describe the fallback accurately.

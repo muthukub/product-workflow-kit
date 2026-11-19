@@ -1,6 +1,6 @@
 # Copy-ready prompts
 
-Replace angle-bracket placeholders with your own product and file paths. These prompts create drafts; an agent cannot invent product approval or architecture authorization.
+Replace angle-bracket placeholders with your own idea, product or file paths. A Lean Canvas needs only a short idea; a formal brief and answers to the nine blocks are optional. These prompts create planning artifacts; an agent cannot invent customer validation, product approval or architecture authorization.
 
 ## Check agent discovery
 
@@ -15,10 +15,17 @@ or a general-agent fallback was used.
 ## Start with a canvas
 
 ```text
-Use lean_canvas to create a Lean Canvas for <product> using <brief path>.
-Follow AGENTS.md and the shared contract. Save under products/<slug>/.
-Keep unverified claims explicit and identify the most useful first validation.
+Use lean_canvas to research this idea and produce a complete Lean Canvas:
+<Describe the product idea in a few sentences.>
+Target customer/geography, if known: <optional context>.
+Use the available web research tools and workflow/LEAN-CANVAS-RESEARCH.md.
+Investigate problems, competitors/substitutes, pricing, channels and costs.
+Recommend the starting business model instead of asking me to fill the blocks.
+Cite actual sources, label inferences/hypotheses, and suggest the first useful test.
+Save under products/<slug>/ using the standard template and shared contract.
 ```
+
+If you already have a brief, add its path and any decisions the agent must preserve. If you prefer offline work, say so; the output will disclose the research limitation and remain draft. Missing private facts stay unknown rather than being invented.
 
 ## Build the roadmap
 

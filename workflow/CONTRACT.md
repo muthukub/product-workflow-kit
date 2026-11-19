@@ -4,6 +4,8 @@
 
 Use the supplied product brief, existing artifacts, and explicit user decisions. Preserve product terminology and agreed scope. Never invent interviews, market facts, commitments, estimates, experiments, approvals, or architecture decisions. Distinguish observed evidence, user decisions, assumptions, and recommendations. Cite source files with a section or external sources with a URL and access date. Browse when current external facts need verification; otherwise mark the claim unverified.
 
+For Lean Canvas work, a short plain-language idea is sufficient input. Follow `workflow/LEAN-CANVAS-RESEARCH.md`: proactively research missing external facts and propose a complete starting model instead of asking the founder to fill the canvas. Clearly labeled proposed prices, targets and cost scenarios are allowed when their rationale, inputs, arithmetic and evidence limits are explicit; they are not measured facts or user commitments. Web evidence does not substitute for customer validation or establish private founder assets.
+
 Fill every template heading. Use `None - <reason>` for genuinely inapplicable content and `TBD - <missing input and consequence>` for unknowns. Do not silently remove sections. Replace angle-bracket placeholders in generated artifacts. Keep outputs lean: one coherent problem per PRD, one outcome per epic, one deliverable per story/enabler, one decision per ADR. Add rows as needed without changing column names.
 
 Ask only questions that materially affect scope or correctness. Continue drafting independent sections while an answer is pending. A missing input may block readiness without blocking creation of a reviewable draft. Never treat elapsed time as an answer. No routine approval pause is required to create or revise drafts.
@@ -30,6 +32,8 @@ Numbers have at least three digits and may grow beyond 999. One register serves 
 ## Lifecycle
 
 General artifacts: `draft`, `ready`, `approved`, `superseded`. `ready` means the specialist's checklist passes, not that a stakeholder approved it. `approved` requires a cited explicit user/stakeholder decision. Record blockers in Open questions and return them in the handoff. A downstream draft may use a draft parent, but must say so and cannot claim readiness while material upstream blockers remain.
+
+For a Lean Canvas, readiness is for bounded validation planning. A populated research-informed canvas can be ready while its labeled hypotheses remain untested; fundamental scope gaps, decision-critical evidence gaps or unavailable live research keep it draft. A finished document does not imply validated demand or implementation/launch readiness.
 
 RFC states: `draft`, `in-review`, `accepted`, `rejected`, `superseded`. ADR states: `proposed`, `accepted`, `rejected`, `superseded`. Accepted RFCs and ADRs require evidence of an actual authorized decision; a recommendation alone does not qualify. Existing accepted decisions are preserved; changed decisions get a new ADR that supersedes the old record, with links both ways.
 

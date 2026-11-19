@@ -1,6 +1,6 @@
 # Claude Code prompts
 
-Start `claude` from the repository root. Use the hyphenated names in CLAUDE.md. These agents reuse the same templates, handoffs and risk rules as Codex. Supply actual brief/source paths before generating product artifacts.
+Start `claude` from the repository root. Use the hyphenated names in CLAUDE.md. These agents reuse the same templates, handoffs and risk rules as Codex. For a Lean Canvas, a plain-language idea is sufficient; brief/source paths and target geography are optional context.
 
 ## Check discovery without generating product artifacts
 
@@ -15,10 +15,16 @@ loaded or a general-purpose fallback was used.
 ## Create a canvas
 
 ```text
-Use lean-canvas to create a Lean Canvas for <product> from <brief path>.
-Follow CLAUDE.md, templates/lean-canvas.md and the shared workflow contract.
-Save under products/<slug>/ and report evidence gaps and next steps.
+Use lean-canvas to research this idea and create a complete Lean Canvas:
+<Describe what you want to build and who it may help.>
+Use available web search and page-reading tools to investigate customer problems,
+alternatives, current advertised prices, channels and costs. Recommend all nine
+blocks in plain English with source links, dates and clearly labeled assumptions.
+Follow CLAUDE.md, workflow/LEAN-CANVAS-RESEARCH.md and the shared template.
+Save under products/<slug>/ and identify practical tests for the key hypotheses.
 ```
+
+Research uses tools available to the session; if access is unavailable, the agent must say so and return a useful draft. A complete canvas is a starting business model, not proof of customer demand or willingness to pay.
 
 ## Create a roadmap
 

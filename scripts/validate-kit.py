@@ -115,6 +115,19 @@ for role, template in ROLES.items():
         check(required_heading in headings, f"{template}: missing {required_heading}")
 
 canvas = read(ROOT / "templates/lean-canvas.md")
+research_playbook = read(ROOT / "workflow/LEAN-CANVAS-RESEARCH.md")
+canvas_profile = parse_toml(ROOT / ".codex/agents/lean_canvas.toml")
+check("workflow/LEAN-CANVAS-RESEARCH.md" in canvas_profile.get("developer_instructions", ""),
+      "Lean Canvas specialist must load the research playbook")
+check("workflow/LEAN-CANVAS-RESEARCH.md" in agents_doc,
+      "Coordinator instructions must route Lean Canvas work through the research playbook")
+for section in ("Research brief", "Evidence and sources", "Research coverage"):
+    check(f"## {section}\n" in canvas, f"Canvas missing research section: {section}")
+for section in ("Start from the idea", "Use research tools by default",
+                "Research the decisions that matter", "Turn evidence into a finished starting model",
+                "Completion and readiness"):
+    check(f"## {section}\n" in research_playbook,
+          f"Lean Canvas research playbook missing section: {section}")
 for block in ("Problem", "Customer segments", "Unique value proposition", "Solution",
               "Channels", "Revenue streams", "Cost structure", "Key metrics", "Unfair advantage"):
     check(f"## {block}\n" in canvas, f"Canvas missing standard block: {block}")
