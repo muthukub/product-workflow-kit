@@ -137,12 +137,13 @@ for horizon in ("Now", "Next", "Later"):
 for supporting in ("workflow/CONTRACT.md", "workflow/ORCHESTRATION.md",
                    "templates/product-index.md", "templates/handoff.md",
                    "examples/prompts.md", "examples/risk-routing.md",
-                   "examples/claude-prompts.md"):
+                   "examples/claude-prompts.md", "USER-MANUAL.md"):
     read(ROOT / supporting)
 
 # Check ordinary local Markdown links in kit documentation. Product placeholders
 # and backticked illustrative paths are intentionally not treated as live links.
-document_paths = [ROOT / "AGENTS.md", ROOT / "CLAUDE.md", ROOT / "README.md"]
+document_paths = [ROOT / "AGENTS.md", ROOT / "CLAUDE.md", ROOT / "README.md",
+                  ROOT / "USER-MANUAL.md"]
 for folder in ("workflow", "templates", "examples"):
     document_paths.extend((ROOT / folder).glob("*.md"))
 links_checked = 0

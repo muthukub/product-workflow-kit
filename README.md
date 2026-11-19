@@ -1,5 +1,7 @@
 # Lean product workflow for Codex and Claude Code
 
+New here? Follow the [step-by-step user manual](USER-MANUAL.md) for what to provide, example prompts, expected files and review points at each stage.
+
 Nine specialized, project-scoped subagents produce consistent Markdown artifacts for:
 
 Lean Canvas → Now / Next / Later Roadmap → Lean PRDs → Epics → User Stories / Enablers → RFCs / ADRs.
