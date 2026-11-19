@@ -81,6 +81,21 @@ All nine blocks receive concrete content. Source-supported facts, reasoned infer
 
 The result is a complete starting model with three prioritized hypotheses and practical next tests. Ready means usable for bounded validation planning, not customer-validated or approved. Existing product canvases are not automatically rewritten when the kit template changes. New profile instructions take effect when the client loads them; use a new session if needed.
 
+## EARS requirements and gradual adoption
+
+New Lean PRDs use selective [EARS](workflow/EARS.md) by default for suitable observable behavior, with stable row IDs such as `PRD-001-R01`, a source/rationale and a verification approach. Epics, stories, enablers and technical decisions reference those rows. Stories retain Given/When/Then examples; learning hypotheses and spikes retain their current methods and exit criteria. Founders can continue describing intent in ordinary language.
+
+The [semantic review protocol](workflow/EARS.md#semantic-review-protocol) remains required alongside static checks: record actual counterexamples, numeric/platform limits, cross-artifact conflicts and dispositions in the PRD/handoff, with a coordinator summary in the index. A passing script or planned test does not resolve those questions. No extra agent or approval state is introduced.
+
+For an existing PRD, adopt only behavior within the requested material revision, recording untouched legacy scope and preserving source revisions and historical decisions. Existing artifacts are not mass-converted. A fresh comparative pilot is optional; use [the pilot prompts and completed-pilot summary](examples/ears-pilot.md) to gather further observations. Record actual clarification rounds, missing edge cases, human review effort and corrections when measured; report unavailable results honestly.
+
+```powershell
+python scripts/validate-requirements.py products/<product-slug>
+python -m unittest discover -s tests -v
+```
+
+The first command audits adopted PRD tables and canonical references without changing files. It performs static shape and link checks, not semantic verification or readiness approval. The second runs regression tests of that checker; passing tests are not a product pilot. The shared guide and manual explain review and lifecycle boundaries.
+
 ## Risk routing
 
 At the PRD stage, the PRD specialist identifies risks and the register specialist assigns stable IDs. The coordinator reconciles the IDs into source and destination documents.

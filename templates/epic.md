@@ -28,6 +28,10 @@ Metric, baseline, target, method, and link to the PRD outcome.
 
 Epic-level observable behavior and outcome criteria, including critical failure or permission cases.
 
+## Requirement references
+
+Follow workflow/EARS.md. Link applicable canonical PRD requirement IDs and explain which part of the outcome they cover, without copying their normative statements. Use None with a specific reason if no requirements apply or the parent is explicitly unmigrated. Apply the semantic review protocol to outcome boundaries, exclusions, thresholds and coverage; report actual findings, input revisions and blockers in the handoff.
+
 ## Story and enabler breakdown
 
 | Item / candidate | Kind | Outcome or deliverable | Dependency | Risk addressed |

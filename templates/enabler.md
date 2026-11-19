@@ -22,9 +22,13 @@ Kind: spike, infrastructure, architecture, migration, security, operations, or o
 
 ## Deliverables and acceptance criteria
 
-| Deliverable | Observable acceptance criterion | Verification / evidence |
-| --- | --- | --- |
-| <deliverable> | <criterion> | <method> |
+| Deliverable | Requirement | Observable acceptance criterion | Verification / evidence |
+| --- | --- | --- | --- |
+| <deliverable> | <canonical requirement ID link or None - investigation/other reason> | <criterion> | <method> |
+
+## Requirement references
+
+Follow workflow/EARS.md. Link the canonical PRD behaviors this work supports, without inventing competing requirements or resolving architecture implicitly. Use None with a specific reason when investigation-only work or an explicitly unmigrated parent has no applicable rows. Preserve spike questions, methods, timeboxes and decision-oriented exits. Apply the semantic review protocol to applicable numeric/device limits, failure states, platform side effects and expected evidence; report actual findings, input revisions and blockers in the handoff.
 
 ## Technical risk and architecture route
 
@@ -50,5 +54,6 @@ Unknowns that prevent readiness and next action.
 
 - [ ] A real capability and downstream benefit are clear.
 - [ ] Deliverables and acceptance criteria are verifiable.
+- [ ] Canonical requirement references and technical decision dependencies are consistent, or non-applicability is explained.
 - [ ] Technical risks retain RFC/ADR routes.
 - [ ] Spikes have a timebox and a decision-oriented exit.

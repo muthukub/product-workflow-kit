@@ -12,12 +12,12 @@ After the project setup in section 1, follow the planning stages below. The stat
 | --- | --- | --- | --- |
 | 1. Lean Canvas | Research the idea and recommend a complete starting business model | `draft` → `ready` → optional `approved` | Do the customer, problem, evidence and proposed model make sense? Ready means usable for validation planning. |
 | 2. Roadmap | Organize outcomes into Now, Next and Later | `draft` → `ready` → optional `approved` | Is the first outcome focused, measurable and realistically sequenced? Horizons are separate from document status. |
-| 3. Lean PRD | Define one initiative's users, behavior, scope, exclusions and success measures | `draft` → `ready` → optional `approved` | Are requirements clear and initial risks registered? Material blockers keep it draft. |
+| 3. Lean PRD | Define scope; use selective EARS for suitable new behavior and record semantic review | `draft` → `ready` → optional `approved` | Are rules observable, justified and verifiable? Have the specialist and coordinator reviewed counterexamples, limits and conflicts, and registered initial risks? Syntax alone does not establish readiness. |
 | 4. Risk register | Track uncertainties and their required responses | Register document: `draft` → `ready` → optional `approved`. Each risk: `open`, `mitigating`, `accepted` or `closed` | Are owners, routes, next actions and closure criteria clear? A ready register can contain open risks. |
 | 5. Epics | Break the requirement into coherent outcomes | `draft` → `ready` → optional `approved` | Does each epic have clear boundaries, acceptance criteria and a useful breakdown? |
-| 6. Stories and enablers | Specify small user/business tasks and supporting technical work | `draft` → `ready` → optional `approved` | Are criteria testable, dependencies visible and risk responses linked? Ready does not mean implemented. |
+| 6. Stories and enablers | Specify small tasks and link applicable PRD requirement IDs to concrete criteria | `draft` → `ready` → optional `approved` | Do scenarios agree with the canonical rules? Are learning tests and dependencies clear? Ready does not mean implemented. |
 | 7. RFCs and ADRs | Evaluate technical options and record decisions; move earlier when needed | RFC: `draft` → `in-review` → `accepted` or `rejected`. ADR: `proposed` → `accepted` or `rejected` | Are alternatives, evidence, consequences and the actual decision recorded? The agent cannot invent acceptance. |
-| 8. Reconcile and learn | Check the connected plan and revise it as evidence arrives | No separate stage status. Update the affected documents and risk entries; use `superseded` for replaced documents/decisions | What should you validate, decide, investigate or implement next? |
+| 8. Reconcile and learn | Review meaning and criterion coverage across the connected plan, run static checks separately, and revise as evidence arrives | No separate stage status. Record actual findings/blockers in the index; update affected documents and risk entries | Do criteria agree with canonical behavior and thresholds? What should you validate, decide, investigate or implement next? |
 
 These are typical paths, not a requirement to visit every status in order. Explicit approval is needed to label a general document approved, but approval is not an automatic pause before every downstream draft. General documents and RFCs/ADRs can become superseded when replaced. Risk acceptance and risk closure are different outcomes, not consecutive mandatory steps. See [the lifecycle rules](#understand-the-statuses-and-lifecycle) for transition conditions and who can authorize them.
 
@@ -103,6 +103,8 @@ moving between horizons. Explain the recommended order. Do not invent dates.
 
 A PRD is a Product Requirements Document. Here it stays lean: one bounded problem, intended users, success measures, included behavior, exclusions and important constraints.
 
+New PRDs use selective EARS by default for suitable observable behavior in their Behavioral requirements table. EARS means Easy Approach to Requirements Syntax: a lightweight way of making system conditions and expected responses explicit. You describe your intent in ordinary language; the specialist writes the structured rules and explains them. Business hypotheses and learning plans keep their existing formats. For an existing PRD, adoption covers the requested material revision; unrelated legacy behavior and historical decisions remain intact. A new comparative pilot is optional.
+
 ```text
 Use lean_prd to define initiative <initiative ID> from
 products/<product-slug>/roadmap/RM-001.md.
@@ -110,6 +112,11 @@ Then use risk_register to deduplicate and register its risks.
 Run these tasks sequentially. Have lean_prd replace temporary risk references
 with the registered IDs and product_roadmap link them to the initiative.
 Keep the scope small and make exclusions and evidence gaps explicit.
+Use workflow/EARS.md: author suitable canonical behavioral
+rows with stable IDs, source/rationale and a verification approach. Keep learning
+hypotheses separate and do not invent approvals or test results.
+Record actual semantic review in the PRD; have the coordinator challenge it and
+summarize scope, findings and blockers in INDEX.md separately from static checks.
 Stop after this stage; downstream response links may remain pending.
 ```
 
@@ -123,9 +130,47 @@ Each risk gets a stable ID such as `RISK-001`, an origin, category, owner or ass
 | User | Can the intended person understand, use or benefit from it? | User story with observable behavior or a measurable learning test |
 | Technical | Can the system meet the needed behavior or constraints? | RFC to evaluate options or ADR to record a decision |
 
-**What to review:** Is the PRD solving one clear problem? Are essential behaviors and exclusions understandable? Can success be observed? Does each risk describe a real uncertainty, with a practical response?
+**What to review:** Is the PRD solving one clear problem? Are essential behaviors and exclusions understandable? In adopted EARS scope, does each rule have clear conditions, an observable response, a justified source and a verification method? Are important failures, conflicting rules and unresolved decisions visible? Does each risk describe a real uncertainty, with a practical response?
 
 **When to continue:** The requirements are clear enough to break down, and risk ownership and next actions are visible. Response links can be pending at this stage if their documents have not yet been created. An early technical uncertainty may need an RFC before the next step.
+
+### How a requirement travels through the workflow
+
+The PRD is the source of truth for each behavioral rule. A row might have ID `PRD-001-R01`. An illustrative EARS statement is: "While a report is being generated, when a user requests its export, the application shall reject the export request."
+
+An epic groups the outcome and references that ID. A story references the same ID and gives concrete Given/When/Then examples, including important boundary and failure cases. An enabler explains the technical work that supports it. An RFC/ADR references it as a constraint on the evaluated or chosen approach. These documents do not independently maintain copies of the normative sentence.
+
+If a story exposes a missing behavior, ask the coordinator to have the PRD specialist add or revise the canonical row, then reconcile affected scenarios and decisions. Existing IDs stay stable across wording corrections. Retired/replaced rows are recorded in Requirement changes, and new obligations receive new IDs. A pure learning story or spike can explain why no behavioral requirement applies and retain its investigation format.
+
+There is no new agent, artifact type or lifecycle state. The [EARS guide](workflow/EARS.md) explains adoption, patterns, linking, review and checking limits. Use the [adoption and optional pilot prompts](examples/ears-pilot.md) for routine work or a further comparative measurement. Existing products are not automatically migrated.
+
+### How semantic review works
+
+Semantic review checks what a rule means and whether its examples agree. The PRD specialist records actual review in the PRD, then the coordinator challenges it before treating the document as ready. Downstream specialists review their applicable rules against concrete examples and return findings through their handoffs. This can be agent review; it does not imply a human or customer tested anything.
+
+| Review focus | Example question |
+| --- | --- |
+| Intent and boundary | Does this preserve the requested scope, and which actor/system controls the result? |
+| Values and limits | What happens for zero, fractions, invalid dates or amounts beyond the supported range? |
+| State and failure | What happens if saving fails or an action is retried? Is a new similar entry different from replay? |
+| Data and side effects | Is the preview still current? Can logs, platform backup or a device flow expose different data? |
+| Cross-artifact consistency | Do the sample sizes, thresholds, terminology and expected totals agree everywhere? |
+| Verification and evidence | What concrete input has what expected outcome? Is that a planned test or an actual result? |
+
+Only relevant questions apply. A review records the source revision, cases considered, findings and next actions; inapplicable areas need a reason, and unperformed checks stay Not reviewed. A missing numeric limit or unresolved platform assumption can keep a document draft even when the requirement sentence and links pass static checks. A complete review does not mean every finding is resolved.
+
+You can request this without learning EARS syntax:
+
+```text
+Review <PRD ID> and its related artifacts using the semantic review protocol
+in workflow/EARS.md. Show concrete counterexamples and inconsistent thresholds.
+Have the owning specialist revise canonical rules when needed, then reconcile
+affected criteria. Record actual findings, reviewed revisions and blockers in
+the PRD/handoffs/index. Run static checks separately; do not invent test results
+or change approval, architecture-acceptance or risk states without evidence.
+```
+
+The coordinator sends behavioral changes to the PRD specialist and register changes to the register specialist. Re-review affected rules and criteria after material changes. Updating links alone is maintenance, rather than a new behavioral correction or evidence of improved productivity.
 
 ## 5. Break the PRD into epics
 
@@ -139,6 +184,7 @@ useful epics. Create separate epic files with reserved IDs, outcome-level
 acceptance criteria, scope boundaries and candidate stories/enablers.
 Map risk responses to the relevant epic. Preserve PRD exclusions and report
 dependencies or technical decisions that block further decomposition.
+Link applicable canonical PRD requirement IDs without copying their rules.
 ```
 
 The coordinator assigns bounded tasks to the epic specialist, keeping one outcome per epic file.
@@ -167,6 +213,8 @@ into small, testable items. Give business/user risks direct story responses
 with hypotheses, methods, thresholds and next decisions. Technical enablers
 must identify the outcome they support and any required RFC/ADR dependency.
 Reserve IDs and separate paths before independent work. Explain the order.
+Declare canonical PRD requirement references and map concrete criteria to them.
+Use justified None for learning-only work or an explicitly unmigrated parent.
 ```
 
 **You receive:** Story files such as `stories/US-001.md` and, where needed, technical work in `enablers/EN-001.md`.
@@ -191,6 +239,7 @@ An RFC, or Request for Comments, compares options and identifies evidence needed
 Review the technical risks for <PRD or epic ID> in products/<product-slug>/.
 Use rfc where alternatives or feasibility need evaluation, and adr where a
 specific decision needs recording. Link the originating PRD and risk IDs.
+Reference canonical PRD requirements that constrain the options or decision.
 Keep undecided ADRs proposed. Specify any supporting spike or implementation
 enabler through the enabler specialist and reconcile affected work items.
 ```
@@ -214,6 +263,9 @@ Use risk_register to check that business/user risks link to stories and technica
 risks link to RFCs/ADRs, with reciprocal links. Report missing responses, owners,
 evidence and decisions. Give me an ordered next-action list and explain which
 items are ready, blocked or still proposed. Do not claim work was implemented.
+For adopted EARS scope, check canonical IDs and reference/scenario agreement;
+run the structural requirements checker and report its limits separately from
+the specialist review of semantics and verification coverage.
 ```
 
 **You receive:** An updated `INDEX.md`, reconciled documents and a concise handoff explaining changes, checks, blockers and next actions. The index is the starting point for finding your current documents and their status.
@@ -384,3 +436,11 @@ python scripts/validate-kit.py
 These synchronize Claude profiles and check the reusable kit's configuration, templates and document links. They do not validate your business, prove live agent behavior, run product acceptance tests or audit generated product documents. The coordinator's stage reviews check the actual planning artifacts.
 
 For the underlying rules, see the [shared contract](workflow/CONTRACT.md), [coordinator runbook](workflow/ORCHESTRATION.md) and [Lean Canvas research playbook](workflow/LEAN-CANVAS-RESEARCH.md).
+
+For structural checking of adopted PRD requirements and their downstream references, use:
+
+```powershell
+python scripts/validate-requirements.py products/<product-slug>
+```
+
+This read-only check catches malformed tables, certain syntax problems, invalid/duplicate IDs and broken canonical references. It skips legacy PRDs without EARS sections and reports when none were checked. It cannot prove completeness, semantic correctness, test coverage or readiness, and never changes statuses. Record adoption scope and actual semantic review in the PRD/handoffs/index, separately from script output. Keep optional pilot measurements in the index; script tests are not evidence of product-pilot gains.

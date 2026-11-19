@@ -38,8 +38,13 @@ Do not invent delivery dates or create PRDs for every Later item.
 
 ## Draft a PRD and register its risks
 
+New PRDs use selective EARS by default. See [adoption and optional pilot prompts](ears-pilot.md) for scoped existing revisions or comparative measurement.
+
 ```text
 Use lean_prd for initiative <RM-001-I01> in products/<slug>/roadmap/RM-001.md.
+Use selective EARS for suitable observable behavior and retain learning hypotheses.
+Record actual semantic review in the PRD and have the coordinator challenge it;
+summarize adoption scope, findings and blockers in INDEX.md separately from scripts.
 Use risk_register to register its business, user and technical risks. Run those
 tasks sequentially, then have lean_prd reconcile the stable risk IDs and
 product_roadmap link them. Stop after the PRD stage; mark downstream routes

@@ -100,6 +100,10 @@ for role, template in ROLES.items():
         check(required in instructions, f"{role}: instructions must reference {required}")
         check((ROOT / required).is_file(), f"{role}: referenced file missing: {required}")
     check("Do not spawn further agents" in instructions, f"{role}: nesting rule missing")
+    if role in {"lean_prd", "epic", "user_story", "enabler", "rfc", "adr", "risk_register"}:
+        check("workflow/EARS.md" in instructions, f"{role}: EARS ownership/reference guidance missing")
+        check("Semantic review:" in instructions,
+              f"{role}: explicit semantic review responsibilities missing")
     check(f"`{role}`" in agents_doc and f"`{role}`" in readme,
           f"{role}: missing from agent catalog")
 
@@ -113,6 +117,32 @@ for role, template in ROLES.items():
     check(len(headings) == len(set(headings)), f"{template}: duplicate section headings")
     for required_heading in ("Open questions", "Readiness checklist"):
         check(required_heading in headings, f"{template}: missing {required_heading}")
+    if role in {"epic", "user_story", "enabler", "rfc", "adr"}:
+        check("Requirement references" in headings, f"{template}: canonical requirement references missing")
+    for match in re.finditer(r"^## ([^\n]+)\n(.*?)(?=^## |\Z)", body, re.MULTILINE | re.DOTALL):
+        check(bool(match.group(2).strip()), f"{template}: empty section {match.group(1)}")
+
+prd_template = read(ROOT / "templates/lean-prd.md")
+for section in ("Behavioral requirements", "Requirement changes", "Semantic review"):
+    check(f"## {section}\n" in prd_template, f"PRD missing {section}")
+check("| Requirement ID | Pattern | EARS statement | Source / rationale | Verification | Risks |" in prd_template,
+      "PRD canonical requirements schema mismatch")
+check("| Criterion | Requirement | Given | When | Then |" in read(ROOT / "templates/user-story.md"),
+      "Story scenarios must retain Given/When/Then and map requirements")
+check("| Deliverable | Requirement | Observable acceptance criterion | Verification / evidence |"
+      in read(ROOT / "templates/enabler.md"), "Enabler criteria must reference canonical requirements")
+check("| Review area | Finding / counterexample | Requirement IDs / source | Disposition / next action |"
+      in prd_template, "PRD semantic review record schema mismatch")
+index_template = read(ROOT / "templates/product-index.md")
+check("## EARS adoption and semantic review\n" in index_template,
+      "Product index must record adoption scope and semantic review")
+check("| Scope / PRD revision | Reviewer / method | Findings and disposition | Readiness blockers / next review |"
+      in index_template, "Product index semantic review summary schema mismatch")
+check("- Semantic review:" in read(ROOT / "templates/handoff.md"),
+      "Handoff must return actual semantic findings or explicit non-applicability")
+ears_guide = read(ROOT / "workflow/EARS.md")
+for section in ("Adoption policy", "Semantic review protocol", "Measurement and gradual adoption"):
+    check(f"## {section}\n" in ears_guide, f"EARS guide missing {section}")
 
 canvas = read(ROOT / "templates/lean-canvas.md")
 research_playbook = read(ROOT / "workflow/LEAN-CANVAS-RESEARCH.md")
@@ -137,7 +167,9 @@ for horizon in ("Now", "Next", "Later"):
 for supporting in ("workflow/CONTRACT.md", "workflow/ORCHESTRATION.md",
                    "templates/product-index.md", "templates/handoff.md",
                    "examples/prompts.md", "examples/risk-routing.md",
-                   "examples/claude-prompts.md", "USER-MANUAL.md"):
+                   "examples/claude-prompts.md", "USER-MANUAL.md", "workflow/EARS.md",
+                   "examples/ears-pilot.md", "scripts/validate-requirements.py",
+                   "tests/test_requirements.py"):
     read(ROOT / supporting)
 
 # Check ordinary local Markdown links in kit documentation. Product placeholders
@@ -148,7 +180,10 @@ for folder in ("workflow", "templates", "examples"):
     document_paths.extend((ROOT / folder).glob("*.md"))
 links_checked = 0
 for path in document_paths:
-    for target in re.findall(r"\[[^\]\n]+\]\(([^)\n]+)\)", read(path)):
+    # Example links inside fenced/inline code describe future product paths.
+    live_text = re.sub(r"(?ms)^```[^\n]*\n.*?^```[ \t]*$", "", read(path))
+    live_text = re.sub(r"`[^`\n]+`", "", live_text)
+    for target in re.findall(r"\[[^\]\n]+\]\(([^)\n]+)\)", live_text):
         if "://" in target or target.startswith("#") or "<" in target:
             continue
         local = target.split("#", 1)[0]

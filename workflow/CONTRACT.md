@@ -29,6 +29,12 @@ Product output root: `products/<product-slug>/`. Before delegating, the coordina
 
 Numbers have at least three digits and may grow beyond 999. One register serves all PRDs in a product. Artifact metadata fields are mandatory: ID, Type, Status, Owner, Updated, Revision, Parents, Risks, Sources. Dates use ISO `YYYY-MM-DD`; owner can be `TBD - assignment needed`. Use relative Markdown links with IDs as labels for local parents, risks, and downstream artifacts. For a risk, link to `../risks/RR-001.md#risk-001` (adjust relative path as needed). Risk headings are exactly `### RISK-001` so anchors remain stable. External input files may be absolute links where required by the client.
 
+## Behavioral requirement authoring
+
+Follow `workflow/EARS.md`: selective EARS is the default for suitable observable behavior in new PRDs. For an existing PRD, adopt within the requested material revision and record untouched legacy scope; routine link/typo maintenance does not require migration. The PRD owns stable row IDs such as `PRD-001-R01` and the canonical statements; they are not new artifacts or separate approval states. Downstream artifacts reference these rows, with concrete Given/When/Then story scenarios and verifiable technical criteria. Keep learning hypotheses, experiments and spike investigations in their existing formats. References to requirements never replace required risk routes. Preserve unrelated artifacts, historical snapshots and accepted decision history.
+
+Retain actual semantic review using the protocol in `workflow/EARS.md`. The PRD records its reviewed revision, reviewer/method, applicable counterexamples, findings and dispositions; the coordinator challenges the draft before readiness and summarizes the review in the index. Downstream specialists report conflicts and missing criteria through their handoffs. Numeric/platform limits, cross-artifact threshold disagreements and unexecuted verification remain visible. A passing static checker cannot substitute for this review or resolve a material blocker. No additional specialist, routine approval step or per-requirement lifecycle is added.
+
 ## Lifecycle
 
 General artifacts: `draft`, `ready`, `approved`, `superseded`. `ready` means the specialist's checklist passes, not that a stakeholder approved it. `approved` requires a cited explicit user/stakeholder decision. Record blockers in Open questions and return them in the handoff. A downstream draft may use a draft parent, but must say so and cannot claim readiness while material upstream blockers remain.

@@ -24,6 +24,10 @@ Existing architecture, current behavior, relevant technical risks, decision driv
 
 Measurable goals, preserved product boundaries, and excluded redesigns.
 
+## Requirement references
+
+Follow workflow/EARS.md. Link canonical PRD requirement IDs as evaluation constraints and explain which options or experiments address them. Do not restate competing normative behavior or infer an accepted decision. Use None with a specific reason for investigation without applicable rows or an explicitly unmigrated parent. Apply the semantic review protocol to option feasibility, numeric/support limits and application/platform boundaries; return actual counterexamples, input revisions and blockers through the handoff.
+
 ## Options and tradeoffs
 
 | Option | Benefits | Costs / drawbacks | Risk effect | Evidence / unknowns |

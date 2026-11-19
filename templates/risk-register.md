@@ -41,7 +41,7 @@ Repeat the following heading and table for each risk. Use a stable heading exact
 | Status | open |
 | Required route | <user-story for business/user; rfc-or-adr for technical> |
 | Routed artifacts | <relative links to US or RFC/ADR; pending explicitly until allocated> |
-| Supporting work | <EN links, related risks, or none> |
+| Supporting work | <EN links, related risks, canonical PRD requirement links where relevant, or none; requirement links do not replace required routes> |
 | Response and next action | <action, responsible party, trigger/date> |
 | Closure criterion | <measurable observation or proof> |
 | Residual exposure | <remaining exposure or unknown> |

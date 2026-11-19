@@ -8,6 +8,8 @@
 - Validation: <template, links, scope, measurable criteria; actual checks only>
 - Risk candidates or updates: <category, cause/event/impact, proposed route, or none>
 - Risk routing coverage: <risk ID -> destination ID; pending explicitly>
+- Requirement coverage / change requests: <canonical PRD requirement links, scenario/verification coverage, missing rules or justified non-applicability; follow workflow/EARS.md>
+- Semantic review: <reviewed input/current revisions and scope, role/method, actual counterexamples/findings and disposition, or Not reviewed/justified None; separate planned verification from evidence and flag readiness blockers>
 - Assumptions and blockers: <unknowns, consequence, needed evidence>
 - Downstream tasks: <agent, requested action, dependencies>
 

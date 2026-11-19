@@ -16,6 +16,10 @@
 
 Specific architectural decision, affected PRD/story/enabler, constraints, decision drivers, risk links, and related RFC if any.
 
+## Requirement references
+
+Follow workflow/EARS.md. Link canonical PRD requirement IDs that constrain this decision and explain the relationship. Preserve the rationale in this ADR and the behavioral statements in the PRD. Use None with a specific reason when no applicable rows exist or the parent is explicitly unmigrated. Apply the semantic review protocol to the proposed/authorized boundary, unsupported limits and evidence constraints; return actual counterexamples, input revisions and blockers through the handoff.
+
 ## Options considered
 
 | Option | Relevant tradeoff | Evidence / reason chosen or rejected |
